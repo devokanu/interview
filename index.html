@@ -235,6 +235,141 @@
 .searchBox{margin:8px 0 10px;padding:0 4px}.searchBox input{width:100%;border:1px solid var(--line);background:#fffdf8;color:var(--forest);border-radius:14px;padding:10px 11px;font-size:12px;font-weight:750;outline:none}.searchBox input:focus{border-color:var(--forest);box-shadow:0 0 0 3px rgba(18,56,45,.08)}.searchResults{display:none;margin-top:8px;max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fffdf8}.searchResults.open{display:block}.searchHit{display:block;width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;padding:9px 10px;cursor:pointer}.searchHit:last-child{border-bottom:0}.searchHit b{display:block;font-size:12px;color:var(--forest)}.searchHit span{display:block;font-size:10px;color:#7d7469;text-transform:uppercase;letter-spacing:.07em;margin:3px 0}.searchHit small{display:block;font-size:11px;color:#5b665e;line-height:1.35}
 @media(max-width:900px){.simGrid{grid-template-columns:1fr}.simHero{border-radius:20px;padding:16px}.simHero h2{font-size:21px}.topicPicker{max-height:260px}.simStats{grid-template-columns:1fr 1fr 1fr}.questionCard{padding:13px;border-radius:18px}.questionCard h4{font-size:15px}.answerOptions button{font-size:12px;padding:10px}.simPanel{border-radius:18px;padding:13px}}
 @media(max-width:520px){.simStats{grid-template-columns:1fr}.simActions{display:grid;grid-template-columns:1fr 1fr}.simBtn{width:100%}.topicPicker{max-height:220px}.simHero p,.answerBox{font-size:13px}}
+
+/* ═══ V21 MOBILE HARDENING — final override layer ═══
+   Keeps desktop intact while making the learning lab usable on narrow phones:
+   compact navigation, readable content cards, no accidental horizontal page
+   overflow, stable simulation focus mode, and safer landscape behavior. */
+@media(max-width:900px){
+  html,body{height:auto!important;min-height:100%;overflow-x:hidden!important;overflow-y:auto!important}
+  body{min-width:0}
+  .app{width:100%!important;max-width:100%!important;min-height:100svh!important;display:flex!important;flex-direction:column!important;overflow:visible!important}
+  .resizer{display:none!important}
+
+  .sidebar{
+    position:sticky!important;top:0!important;z-index:120!important;order:1!important;
+    width:100%!important;max-height:none!important;height:auto!important;overflow:visible!important;
+    padding:8px 9px 7px!important;border-right:0!important;border-bottom:1px solid var(--line)!important;
+    box-shadow:0 8px 26px rgba(18,56,45,.08)
+  }
+  .brand{padding:2px 4px 7px!important;margin-bottom:7px!important}
+  .mark{width:30px!important;height:30px!important;border-radius:11px!important}
+  .brand b{font-size:13px!important}.brand span{font-size:8px!important;letter-spacing:.1em!important}
+  .sectionLabel,.hintBox,.sidebar > div[style*="V18 ANIMATION"]{display:none!important}
+  .searchBox{margin:5px 0 7px!important;padding:0!important;position:relative!important}
+  .searchBox input{height:39px!important;border-radius:13px!important;font-size:12px!important;padding:9px 10px!important}
+  .searchResults{
+    position:absolute!important;left:0!important;right:0!important;top:calc(100% + 6px)!important;
+    z-index:180!important;max-height:min(46svh,360px)!important;box-shadow:0 18px 48px rgba(18,56,45,.18)
+  }
+  .searchHit{padding:10px!important}.searchHit b{font-size:12px!important}.searchHit small{font-size:11px!important}
+
+  .nav{
+    display:flex!important;flex-direction:row!important;gap:7px!important;overflow-x:auto!important;overflow-y:hidden!important;
+    padding:0 1px 6px!important;scroll-snap-type:x proximity!important;-webkit-overflow-scrolling:touch!important
+  }
+  .nav button{
+    flex:0 0 auto!important;min-width:138px!important;max-width:174px!important;min-height:40px!important;
+    padding:8px 9px!important;border-radius:13px!important;font-size:11px!important;line-height:1.22!important;
+    white-space:normal!important;scroll-snap-align:start!important
+  }
+  .num{width:22px!important;height:22px!important;min-width:22px!important;border-radius:8px!important;font-size:10px!important}
+  .group-title{display:none!important}
+  .group-content{display:flex!important;flex-direction:row!important;gap:7px!important;padding-left:0!important}
+
+  .stage{order:2!important;width:100%!important;max-width:100%!important;min-height:0!important;border-left:0!important;overflow:hidden!important}
+  .head{position:relative!important;top:auto!important;z-index:20!important;padding:9px!important;gap:7px!important}
+  .stageTitle{display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:10px!important;min-width:0!important}
+  .stageTitle b{font-size:13px!important;line-height:1.18!important;letter-spacing:-.02em!important;overflow:hidden!important;text-overflow:ellipsis!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important}
+  .stageTitle span{font-size:8px!important;line-height:1.15!important;text-align:right!important;max-width:42%!important}
+  .tools{display:grid!important;grid-template-columns:minmax(0,1fr) repeat(4,minmax(42px,auto))!important;gap:5px!important;width:100%!important;overflow:visible!important}
+  .sel{width:100%!important;min-width:0!important;max-width:none!important;font-size:11px!important;padding:8px 8px!important}
+  .btn{min-width:0!important;min-height:36px!important;padding:7px 8px!important;font-size:10px!important;border-radius:11px!important}
+  .fontCtl{display:none!important}
+  .sceneWrap{height:clamp(250px,38svh,380px)!important;min-height:250px!important;max-height:380px!important;overflow:hidden!important}
+  .scene{width:100%!important;min-width:0!important;max-width:100%!important}
+  .scene svg{width:100%!important;min-width:0!important;max-width:100%!important}
+  .big{font-size:20px!important}.txt{font-size:12px!important}.mini{font-size:10px!important}.label{font-size:10px!important}
+  .status{grid-template-columns:1fr!important;padding:8px 9px!important;gap:7px!important}
+  .stepText{font-size:11px!important;line-height:1.35!important;white-space:normal!important}
+  .progress{width:100%!important}
+  .work{display:grid!important;grid-template-columns:1fr!important;overflow:visible!important}
+  .code{min-height:180px!important;max-height:30svh!important;font-size:11px!important;line-height:1.6!important;overflow:auto!important;-webkit-overflow-scrolling:touch!important}
+  .line{padding-left:11px!important;padding-right:10px!important}
+  .logPane{max-height:160px!important;min-height:96px!important}.log{max-height:118px!important;font-size:10px!important}
+
+  .main{order:3!important;width:100%!important;max-width:100%!important;overflow:visible!important;padding:14px 10px 76px!important}
+  .content{width:100%!important;max-width:100%!important;min-width:0!important}
+  .phase{max-width:100%!important;font-size:9px!important;line-height:1.25!important;white-space:normal!important;border-radius:14px!important}
+  h1{font-size:clamp(24px,8vw,31px)!important;line-height:1.04!important;letter-spacing:-.05em!important;overflow-wrap:anywhere!important}
+  .lead{font-size:14px!important;line-height:1.58!important}
+  .quick{grid-template-columns:1fr!important;gap:8px!important;margin:14px 0!important}
+  .pillCard{padding:12px!important;border-radius:16px!important}
+  .doc,.simPanel,.questionCard,.prepCallout,.sourcePhase,.sourceQA{max-width:100%!important;min-width:0!important}
+  .doc{padding:15px!important;border-radius:18px!important;margin:13px 0!important}
+  .doc h2{font-size:17px!important;line-height:1.25!important;overflow-wrap:anywhere!important}
+  .doc h3{font-size:11px!important;letter-spacing:.06em!important;line-height:1.35!important}
+  .doc p,.doc li{font-size:14px!important;line-height:1.66!important}
+  .doc ul{padding-left:18px!important}
+  .doc code{font-size:11px!important;white-space:normal!important;word-break:break-word!important}
+  .doc pre,.questionCard pre{
+    max-width:100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;
+    border-radius:14px!important;padding:12px!important;font-size:11px!important
+  }
+  .doc pre code,.questionCard pre code{white-space:pre!important;font-size:11px!important;line-height:1.58!important}
+
+  .simStageHidden .app{display:flex!important;grid-template-columns:none!important}
+  .simStageHidden .stage{display:none!important}
+  .simStageHidden .main{padding:14px 10px 76px!important}
+  .stageToggle{position:sticky!important;top:8px!important;z-index:20!important}
+  .simWrap{gap:12px!important}
+  .simHero{padding:15px!important;border-radius:18px!important}
+  .simHero h2{font-size:20px!important;line-height:1.15!important;overflow-wrap:anywhere!important}
+  .simHero p{font-size:13px!important;line-height:1.55!important}
+  .simGrid{display:grid!important;grid-template-columns:1fr!important;gap:12px!important}
+  .simPanel{padding:12px!important;border-radius:17px!important}
+  .topicPicker{max-height:230px!important}
+  .topicPick{font-size:11px!important;padding:9px!important}
+  .simStats{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important}
+  .statBox{padding:9px!important}.statBox b{font-size:16px!important}.statBox span{font-size:8px!important;line-height:1.2!important}
+  .questionCard{padding:12px!important;border-radius:17px!important;margin:10px 0!important}
+  .questionCard h4{font-size:15px!important;line-height:1.35!important;overflow-wrap:anywhere!important}
+  .answerOptions button{font-size:12px!important;padding:10px!important}
+  .answerBox,.sourceAnswer{font-size:13px!important;line-height:1.58!important;overflow-wrap:anywhere!important}
+  .simActions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .simBtn{width:100%!important;min-height:38px!important;padding:8px 9px!important;font-size:11px!important}
+  .sourcePhase summary{display:grid!important;grid-template-columns:1fr auto!important;align-items:start!important;padding:12px!important;font-size:12px!important;line-height:1.35!important}
+  .sourcePhase summary span{font-size:9px!important;white-space:nowrap!important}
+  .sourcePhaseBody{padding:0 10px 12px!important}
+  .sourceQA summary{padding:10px!important;font-size:12px!important;line-height:1.45!important;overflow-wrap:anywhere!important}
+  .prio{min-width:25px!important;height:19px!important;font-size:9px!important;margin-right:5px!important}
+  .checklist{padding:12px!important;border-radius:16px!important}.checklist ul{padding-left:18px!important}
+}
+
+@media(max-width:430px){
+  .sidebar{padding:7px 8px 6px!important}
+  .nav button{min-width:126px!important;max-width:154px!important;font-size:10px!important;padding:7px 8px!important}
+  .tools{grid-template-columns:1fr repeat(2,auto)!important}
+  .tools #reset,.tools #focus{grid-column:auto}
+  .sceneWrap{height:34svh!important;min-height:220px!important;max-height:330px!important}
+  .code{max-height:28svh!important;min-height:160px!important}
+  .simStats{grid-template-columns:1fr!important}
+  .simActions{grid-template-columns:1fr!important}
+  .sourcePhase summary{grid-template-columns:1fr!important}
+  .sourcePhase summary span{margin-top:4px!important}
+}
+
+@media(max-width:900px) and (orientation:landscape){
+  .app{display:flex!important;flex-direction:column!important}
+  .sidebar{position:relative!important;max-height:none!important}
+  .nav{flex-direction:row!important;overflow-x:auto!important;overflow-y:hidden!important}
+  .stage{order:2!important}
+  .main{order:3!important}
+  .sceneWrap{height:52svh!important;min-height:230px!important;max-height:360px!important}
+  .work{grid-template-columns:minmax(0,1.15fr) minmax(160px,.75fr)!important;overflow:hidden!important}
+  .logPane{display:flex!important;border-left:1px solid var(--line)!important;border-top:0!important;max-height:none!important}
+  .code{max-height:34svh!important}
+}
 </style>
 </head>
 <body>
