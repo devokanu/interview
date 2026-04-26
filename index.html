@@ -370,6 +370,80 @@
   .logPane{display:flex!important;border-left:1px solid var(--line)!important;border-top:0!important;max-height:none!important}
   .code{max-height:34svh!important}
 }
+
+/* ═══ V22 MOBILE READABILITY + ACCORDION NAV ═══ */
+@media(max-width:900px){
+  body{font-size:16px!important}
+  .sidebar{
+    max-height:min(64svh,620px)!important;overflow-y:auto!important;overflow-x:hidden!important;
+    -webkit-overflow-scrolling:touch!important;padding:10px!important
+  }
+  .brand b{font-size:15px!important}.brand span{font-size:9px!important}.mark{width:34px!important;height:34px!important}
+  .searchBox input{height:44px!important;font-size:15px!important;padding:10px 12px!important}
+  .searchHit b{font-size:14px!important}.searchHit span{font-size:11px!important}.searchHit small{font-size:13px!important;line-height:1.45!important}
+  .nav{display:flex!important;flex-direction:column!important;gap:6px!important;overflow:visible!important;padding:0 0 8px!important}
+  .group-title{
+    display:flex!important;position:relative!important;width:100%!important;margin:3px 0 0!important;
+    padding:13px 14px!important;border:1px solid var(--line)!important;border-radius:15px!important;
+    background:#fffdf8!important;color:var(--forest)!important;font-size:13px!important;line-height:1.2!important;
+    box-shadow:0 8px 22px rgba(18,56,45,.06)!important
+  }
+  .group-content{display:none!important;flex-direction:column!important;gap:7px!important;padding:7px 0 8px 0!important}
+  .group-content.open{display:flex!important}
+  .nav button{
+    width:100%!important;max-width:none!important;min-width:0!important;min-height:48px!important;
+    padding:12px 12px!important;font-size:14px!important;line-height:1.3!important;border-radius:15px!important;
+    white-space:normal!important;scroll-snap-align:none!important
+  }
+  .num{width:27px!important;height:27px!important;min-width:27px!important;font-size:11px!important}
+
+  .main{padding:16px 12px 84px!important}
+  .phase{font-size:11px!important;line-height:1.35!important;padding:7px 11px!important}
+  h1{font-size:clamp(29px,8.6vw,38px)!important;line-height:1.06!important}
+  .lead{font-size:16px!important;line-height:1.72!important}
+  .pillCard b{font-size:15px!important}.pillCard span{font-size:14px!important;line-height:1.6!important}
+  .doc{padding:17px!important;border-radius:20px!important}
+  .doc h2{font-size:20px!important;line-height:1.28!important}
+  .doc h3{font-size:13px!important;line-height:1.42!important;margin-top:24px!important}
+  .doc h4{font-size:15px!important;line-height:1.4!important}
+  .doc p,.doc li{font-size:16px!important;line-height:1.78!important}
+  .doc code{font-size:13px!important;line-height:1.5!important}
+  .doc pre,.questionCard pre{font-size:12px!important;padding:13px!important}
+  .doc pre code,.questionCard pre code{font-size:12px!important;line-height:1.66!important}
+
+  .stageTitle b{font-size:15px!important}.stageTitle span{font-size:10px!important}
+  .sel{font-size:13px!important}.btn{font-size:12px!important;min-height:39px!important}
+  .stepText{font-size:13px!important;line-height:1.45!important}
+  .code{font-size:12px!important}.log{font-size:12px!important}
+
+  .simHero h2{font-size:23px!important}.simHero p{font-size:15px!important;line-height:1.65!important}
+  .simPanel h3{font-size:13px!important}.topicPick{font-size:14px!important;line-height:1.35!important}
+  .topicPick span{font-size:11px!important}
+  .questionCard h4{font-size:17px!important;line-height:1.45!important}
+  .answerOptions button{font-size:15px!important;line-height:1.55!important}
+  .answerBox,.sourceAnswer,.prepCallout p{font-size:15px!important;line-height:1.72!important}
+  .simBtn{font-size:13px!important}
+  .sourcePhase summary{font-size:15px!important;line-height:1.45!important}
+  .sourceQA summary{font-size:15px!important;line-height:1.55!important}
+  .sourcePhaseBody p{font-size:15px!important;line-height:1.65!important}
+  .prio{font-size:10px!important;min-width:30px!important;height:22px!important}
+}
+
+@media(max-width:430px){
+  .sidebar{max-height:68svh!important}
+  .nav button{font-size:13px!important;min-height:46px!important}
+  .group-title{font-size:12px!important;padding:12px!important}
+  h1{font-size:clamp(27px,9vw,34px)!important}
+  .doc p,.doc li{font-size:15.5px!important}
+  .lead{font-size:15.5px!important}
+  .tools{grid-template-columns:1fr repeat(2,auto)!important}
+}
+
+@media(max-width:900px) and (orientation:landscape){
+  .sidebar{position:relative!important;max-height:58svh!important}
+  .nav{flex-direction:column!important;overflow:visible!important}
+  .group-content{flex-direction:column!important}
+}
 </style>
 </head>
 <body>
@@ -1517,6 +1591,332 @@ const PDF_COVERAGE_TOPICS = PDF_COVERAGE_SPECS.map(spec=>({
   content:buildDeepContent(spec)
 }));
 
+const TRAINING_NOTE_SPECS = [
+  {
+    id:'springstereotype', title:'Spring Stereotype Annotations', phase:'FAZ 2 · Spring Runtime',
+    lead:'@Component, @Service, @Repository ve @Controller farklarını sadece isim değil mimari niyet, exception translation ve katman semantiğiyle açıklar.',
+    bad:'Annotation-as-decoration', good:'Semantic Bean Design',
+    bad_code:`@Component
+class PaymentService {
+    public void pay() { /* business + SQL + HTTP */ }
+}`,
+    good_code:`@Service
+class PaymentService {
+    private final PaymentRepository repository;
+    public Receipt pay(PaymentCommand command) {
+        return repository.save(command.toPayment()).toReceipt();
+    }
+}
+
+@Repository
+interface PaymentRepository extends JpaRepository<Payment, Long> {}`,
+    bad_steps:[['Her class @Component ile işaretlenir; katman niyeti kaybolur.',1,'bad'],['Business, persistence ve HTTP adapter sorumlulukları karışır.',3,'bad'],['Repository exception translation avantajı kullanılmaz.',3,'bad'],['Review sırasında classın rolü okunamaz hale gelir.',3,'bad']],
+    good_steps:[['@Component generic bean işaretidir.',1,'info'],['@Service business use-case niyetini anlatır.',2,'ok'],['@Repository persistence boundary ve exception translation taşır.',8,'ok'],['Annotation seçimi mimari iletişim haline gelir.',8,'ok']],
+    sections:[
+      ['Temelden Açıklama','Springde @Component en genel stereotype anotasyonudur; container bu classı bean olarak tarar ve yönetir. @Service, @Repository ve @Controller da teknik olarak componenttir ama semantik olarak farklı katman niyeti taşırlar. @Service business/use-case katmanını, @Repository veri erişim sınırını, @Controller HTTP adapter katmanını temsil eder.'],
+      ['Gerçek Senaryo','Bir ödeme projesinde her şeye @Component yazarsan kod çalışabilir ama mimari okunurluk düşer. PaymentService business kararını taşımalı, PaymentRepository veri erişimini saklamalı, PaymentController HTTP istek/cevap modelini yönetmelidir. Bu ayrım test, review ve ekip içi iletişimde ciddi hız kazandırır.'],
+      ['Repository Farkı','@Repository persistence exceptionlarını Springin DataAccessException hiyerarşisine çevirebilir. Bu, JDBC/JPA/vendor exceptionlarının servis katmanına ham biçimde sızmasını azaltır.'],
+      ['Senior Cevap','Ben stereotype anotasyonları sadece bean yaratma aracı olarak görmem. Kodun hangi mimari katmanda olduğunu anlatan bir sözleşme gibi kullanırım. @Service business orchestration, @Repository data access, @Controller transport adapter demektir.'],
+      ['Yazılım Mimarı Bakışı','Stereotype standardı büyük ekiplerde mimari haritadır. Classın adı, paketi ve anotasyonu aynı şeyi söylüyorsa servis sınırları ve review kalitesi güçlenir.']
+    ]
+  },
+  {
+    id:'asyncdownsides', title:'Asenkron Kullanımın Olumsuz Yönleri', phase:'FAZ 2 · Async Runtime',
+    lead:'Asenkron mimarinin sadece hız değil debug, trace, consistency, backpressure ve kullanıcı beklentisi maliyetlerini anlatır.',
+    bad:'Async Everywhere', good:'Controlled Async Boundary',
+    bad_code:`@Async
+void updateInventory(Order order) {
+    stock.reserve(order); // exception kimseye dönmez
+    crm.notify(order);
+}`,
+    good_code:`CompletableFuture<ReserveResult> reserve =
+    supplyAsync(() -> stock.reserve(order), ioPool)
+        .orTimeout(2, TimeUnit.SECONDS)
+        .exceptionally(ex -> ReserveResult.failed(order.id(), ex));
+
+reserve.thenAccept(result -> outbox.save(result.toEvent()));`,
+    bad_steps:[['Asenkron iş başlatılır ama sahibi ve sonucu takip edilmez.',2,'bad'],['Exception çağırana dönmez; log/metric yoksa kaybolur.',2,'bad'],['Trace zinciri kopar, mesaj nerede kaldı sorusu zorlaşır.',3,'bad'],['Backpressure yoksa kuyruk memoryyi büyütür.',3,'bad']],
+    good_steps:[['Async boundary açıkça tasarlanır.',1,'ok'],['Timeout ve failure sonucu domain modele çevrilir.',3,'ok'],['Outbox/event ile takip edilebilir state üretilir.',6,'ok'],['Metric, trace ve retry policy asenkron işi işletilebilir yapar.',6,'ok']],
+    sections:[
+      ['Temelden Açıklama','Asenkron kullanım çağıran threadi bekletmeyebilir ve bağımsız işleri paralel ilerletebilir. Ama bunun bedeli vardır: hata akışı dağılır, debug zorlaşır, trace karmaşıklaşır, consistency anlık olmaktan çıkar ve backpressure tasarlamak zorunda kalırsın.'],
+      ['Gerçek Senaryo','Sipariş alındıktan sonra CRM güncellemesini async yaptığını düşün. CRM çağrısı hata alırsa kullanıcı sipariş ekranında başarılı görür ama CRM eksik kalabilir. Bu kabul edilebilir olabilir, fakat bunun retry, DLT, alarm ve reconciliation süreci yoksa sessiz veri tutarsızlığı üretirsin.'],
+      ['Debug ve Trace Maliyeti','Senkron zincirde stack trace ve request trace daha doğrudandır. Asenkron zincirde iş broker, executor veya scheduler üzerinden başka zamanda çalışır. TraceId propagation, structured log ve event state olmadan "mesaj nerede kayboldu?" sorusu çok pahalı hale gelir.'],
+      ['Senior Cevap','Asenkronu hız için değil, doğru coupling ve dayanıklılık için kullanırım. Kullanıcı hangi sonucu hemen bilmek zorunda, hangi iş arkada tamamlanabilir, hata olursa kim telafi eder, kuyruk dolarsa ne olur sorularını cevaplamadan async seçmem.'],
+      ['Yazılım Mimarı Bakışı','Asenkron mimari ekip ve operasyon olgunluğu ister. Observability, idempotency, retry, DLQ ve reconciliation yoksa sistem ilk gün hızlı görünür ama incident gününde sisli bir labirente döner.']
+    ]
+  },
+  {
+    id:'jwtsessions', title:'JWT Kullanmasaydık Ne Kullanırdık?', phase:'FAZ 2 · Security',
+    lead:'JWT yerine server-side session, opaque token, API key, mTLS ve OAuth introspection seçeneklerini trade-offlarıyla anlatır.',
+    bad:'JWT-by-default', good:'Token Strategy by Risk',
+    bad_code:`// her istemciye uzun ömürlü JWT
+// revoke yok, audience kontrolü yok, refresh stratejisi yok`,
+    good_code:`OpaqueToken token = authServer.issue(user, scope);
+// Resource server introspection veya session store ile doğrular
+// Revoke, rotation ve central policy uygulanabilir`,
+    bad_steps:[['JWT her probleme otomatik çözüm sanılır.',1,'bad'],['Token uzun ömürlü ve revoke edilemez tasarlanır.',2,'bad'],['Yetki değişikliği token expire olana kadar etkisiz kalır.',2,'bad'],['Security kararı operasyonel riskten kopar.',3,'bad']],
+    good_steps:[['Token stratejisi client tipi ve riskle seçilir.',1,'ok'],['Opaque token merkezi revoke ve introspection sağlar.',2,'ok'],['Session cookie web uygulamalarında güçlü olabilir.',2,'ok'],['mTLS/API key machine-to-machine senaryoda düşünülür.',3,'ok']],
+    sections:[
+      ['Temelden Açıklama','JWT self-contained tokendir; imza, claim ve expiry içerir. Resource server tokenı merkezi sunucuya sormadan doğrulayabilir. JWT kullanmasaydık server-side session cookie, opaque bearer token, OAuth2 introspection, API key, mTLS client certificate veya kısa ömürlü one-time token gibi alternatifler kullanabilirdik.'],
+      ['Gerçek Senaryo','Mobil bankacılıkta token çalınması, cihaz kaybı veya kullanıcı yetkisinin anında düşürülmesi gerekebilir. Uzun ömürlü JWT burada risklidir. Opaque token + merkezi introspection veya kısa ömürlü access token + refresh token rotation revoke ihtiyacını daha iyi yönetebilir.'],
+      ['Session Cookie','Browser tabanlı uygulamada HttpOnly, Secure, SameSite cookie ile server-side session güvenli ve yönetilebilir olabilir. Dezavantajı session store bağımlılığı ve yatay ölçek için shared store ihtiyacıdır.'],
+      ['Opaque Token','Opaque token resource server için anlamsız bir stringdir. Doğrulama auth server veya token store üzerinden yapılır. Merkezi revoke ve policy avantajı vardır; dezavantajı her doğrulamada network/cache maliyetidir.'],
+      ['Senior Cevap','JWT iyi bir araçtır ama her zaman doğru cevap değildir. Revoke ihtiyacı, token boyutu, claim gizliliği, client tipi, latency, compliance ve operasyonel yönetim kararımı belirler.']
+    ]
+  },
+  {
+    id:'httpverbsdeep', title:'HTTP GET / POST / PUT / PATCH Deep Dive', phase:'FAZ 2 · API Design',
+    lead:'HTTP methodlarını safe/idempotent/cacheable semantik, senaryo ve yanlış kullanım üzerinden detaylandırır.',
+    bad:'Action Endpoint Chaos', good:'HTTP Semantics',
+    bad_code:`POST /getProduct
+POST /updateProductName
+GET /deleteBasketItem?id=10`,
+    good_code:`GET    /products/42
+POST   /orders
+PUT    /users/42/profile
+PATCH  /users/42/profile
+DELETE /basket/items/10`,
+    bad_steps:[['Endpointler HTTP semantiği yerine fiil isimleriyle tasarlanır.',1,'bad'],['GET yan etki üretir ve cache/proxy davranışı riskli hale gelir.',3,'bad'],['POST ile her şey yapılınca idempotency belirsizleşir.',2,'bad'],['Client retry ve ara katman davranışı tahmin edilemez olur.',3,'bad']],
+    good_steps:[['GET safe ve cachelenebilir okuma için kullanılır.',1,'ok'],['POST yeni resource veya command başlatır.',2,'ok'],['PUT resourceun tam temsilini idempotent şekilde değiştirir.',3,'ok'],['PATCH kısmi değişikliktir; patch formatı ve concurrency kontrolü önemlidir.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','HTTP methodları sadece isim değil davranış sözleşmesidir. GET safe olmalıdır; yani server stateini değiştirmemelidir. PUT ve DELETE idempotenttir; aynı istek birden fazla kez gönderildiğinde nihai state değişmemelidir. POST genelde idempotent değildir; command veya yeni resource yaratma için kullanılır. PATCH kısmi güncellemedir.'],
+      ['GET Senaryosu','Ürün detayını okumak için GET /products/42 kullanırım. Bu çağrı cachelenebilir olabilir, retry güvenlidir ve yan etki üretmemelidir. GET ile "sepete ekle" yapmak tehlikelidir; crawler, cache veya prefetch yanlışlıkla işlem başlatabilir.'],
+      ['POST Senaryosu','Sipariş oluşturmak için POST /orders doğrudur çünkü yeni bir işlem başlatır. Ödeme gibi tekrar riski olan POSTlarda idempotency-key kullanırım; timeout sonrası client aynı isteği tekrar yollarsa iki sipariş oluşmamalıdır.'],
+      ['PUT vs PATCH','PUT genelde resourceun tam temsilini değiştirir: kullanıcı profilini komple gönderirsin. PATCH sadece değişen alanı gönderir: sadece telefon numarasını güncellersin. PATCHte JSON Merge Patch/JSON Patch formatı, null anlamı ve optimistic locking çok önemlidir.'],
+      ['Senior Cevap','HTTP method seçimini client retry, cache, proxy, idempotency ve audit davranışıyla birlikte tasarlarım. Bu yüzden endpoint isimleri sadece güzel görünmek için değil, sistemin arıza davranışını belirlemek için önemlidir.']
+    ]
+  },
+  {
+    id:'statefulstateless', title:'Stateful vs Stateless', phase:'FAZ 3 · Architecture',
+    lead:'Statein nerede yaşadığı, yatay ölçekleme, sticky session, cache ve failure recovery etkileriyle anlatır.',
+    bad:'Hidden Instance State', good:'Externalized State',
+    bad_code:`class CheckoutController {
+    private Cart currentCart; // instance memoryde kullanıcı statei
+}`,
+    good_code:`POST /checkout
+Authorization: Bearer token
+cart state -> Redis/DB
+service instance -> stateless processing`,
+    bad_steps:[['Kullanıcı statei instance memorysinde tutulur.',2,'bad'],['Load balancer başka instancea yönlendirince akış bozulur.',2,'bad'],['Instance restart olduğunda kullanıcı statei kaybolur.',2,'bad'],['Yatay ölçekleme sticky sessiona bağımlı hale gelir.',3,'bad']],
+    good_steps:[['Stateless servis requestler arasında zorunlu instance state tutmaz.',1,'ok'],['State token, DB, Redis veya event store gibi dış yerde tutulur.',3,'ok'],['Her instance aynı requesti işleyebilir.',4,'ok'],['Scale-out ve recovery kolaylaşır.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','Stateful sistem requestler arasında memoryde veya instance üzerinde anlamlı state tutar. Stateless sistemde ise requesti işlemek için gereken bilgi request, token veya dış storage üzerinden gelir; instance değişse de işlem devam edebilir.'],
+      ['Gerçek Senaryo','Sepet bilgisini uygulama instanceındaki HashMapte tutarsan load balancer ikinci requesti başka instancea gönderdiğinde sepet kaybolur. Sticky session ile bunu yamayabilirsin ama instance ölürse yine kaybedersin. Sepeti Redis veya DBde tutmak stateless uygulama instanceı sağlar.'],
+      ['Trade-off','Stateless uygulama ölçekleme ve recovery için iyidir ama statei dış sisteme taşıdığın için latency, consistency ve dependency maliyeti getirir. Stateful sistem bazı realtime veya stream processing senaryolarında verimli olabilir ama operasyonu daha zordur.'],
+      ['Senior Cevap','Ben statelesslığı "hiç state yok" diye değil, "state uygulama instanceına yapışık değil" diye açıklarım. Statein sahipliği, yaşam süresi, tutarlılığı ve recovery davranışı tasarımın parçasıdır.'],
+      ['Yazılım Mimarı Bakışı','Cloud-native sistemlerde stateless compute + externalized state temel modeldir. Ama her state dışarı taşınınca sistem bedava ölçeklenmez; storage kapasitesi, cache stratejisi ve failure mode birlikte tasarlanır.']
+    ]
+  },
+  {
+    id:'aopdeep', title:'Spring AOP Mantığı', phase:'FAZ 2 · Spring Runtime',
+    lead:'AOP mantığını cross-cutting concern, proxy boundary, join point, advice ve self-invocation tuzaklarıyla anlatır.',
+    bad:'Scattered Cross-cutting Code', good:'Proxy Advice Boundary',
+    bad_code:`void transfer() {
+    log.info("start");
+    tx.begin();
+    auth.check();
+    // business
+    tx.commit();
+}`,
+    good_code:`@Transactional
+@PreAuthorize("hasRole('TRANSFER')")
+public void transfer(Command command) {
+    domainService.transfer(command);
+}`,
+    bad_steps:[['Log, transaction ve security business koduna dağılır.',1,'bad'],['Her method aynı boilerplatei taşır.',4,'bad'],['Bir noktada unutulan cross-cutting davranış production riski olur.',4,'bad'],['Self-invocation proxyyi bypass ederse annotation çalışmayabilir.',4,'bad']],
+    good_steps:[['AOP cross-cutting concernleri business koddan ayırır.',1,'ok'],['Spring proxy method çağrısını sarar.',2,'ok'],['Advice transaction/security/logging davranışını uygular.',3,'ok'],['Business method sade kalır.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','AOP, birçok yerde tekrar eden teknik davranışları business koddan ayırma yaklaşımıdır. Logging, transaction, security, metric ve cache bunun tipik örnekleridir. Spring AOP çoğunlukla proxy ile çalışır; beanin dışından proxy üzerinden gelen çağrı sarılır ve advice uygulanır.'],
+      ['Gerçek Senaryo','Para transferi methodunda hem authorization hem transaction hem audit log gerekir. Bunları her methoda elle yazarsan unutma ve tutarsızlık riski büyür. @Transactional ve security anotasyonları proxy üzerinden business methodun etrafına davranış ekler.'],
+      ['Self-invocation Tuzağı','Aynı class içinde this.innerMethod() çağırırsan Spring proxy boundaryden geçmez. Bu yüzden inner methoddaki @Transactional veya @Async beklediğin gibi çalışmayabilir. Bu mülakatta çok güçlü bir senior sinyaldir.'],
+      ['AOC Notu','Sorudaki AOC ifadesini Spring bağlamında AOP olarak ele alıyorum. Eğer kastedilen başka bir kavramsa ayrı başlık olarak da eklenebilir; burada Aspect Oriented Programming mantığı anlatılıyor.'],
+      ['Senior Cevap','AOPyi sihirli annotation sistemi olarak değil proxy boundary ve cross-cutting concern ayrımı olarak açıklarım. Hangi çağrıların proxyden geçtiğini bilmeden @Transactional ve @Async güvenli kullanılamaz.']
+    ]
+  },
+  {
+    id:'optimisticlocking', title:'Optimistic Locking', phase:'FAZ 4 · Data Layer',
+    lead:'Aynı kaydın eşzamanlı güncellenmesinde version alanı, lost update ve conflict handling stratejisini anlatır.',
+    bad:'Lost Update', good:'Versioned Update',
+    bad_code:`Order order = repository.findById(id);
+order.setAddress(newAddress);
+repository.save(order); // başka kullanıcının değişikliği ezilebilir`,
+    good_code:`@Entity
+class Order {
+    @Version
+    private long version;
+}
+// version uyuşmazsa OptimisticLockException alınır`,
+    bad_steps:[['İki kullanıcı aynı kaydı aynı versionda okur.',1,'bad'],['İkisi de farklı alanları değiştirir.',2,'bad'],['Son yazan ilk değişikliği sessizce ezer.',3,'bad'],['Lost update kullanıcı fark etmeden veri kaybı üretir.',3,'bad']],
+    good_steps:[['Entity version alanı taşır.',3,'ok'],['Update sırasında WHERE id + version kontrol edilir.',5,'ok'],['Version uyuşmazsa conflict exception döner.',6,'ok'],['Kullanıcıya merge/retry akışı tasarlanır.',6,'ok']],
+    sections:[
+      ['Temelden Açıklama','Optimistic locking, veri çakışmasının nadir olduğu varsayımıyla lockı baştan almak yerine update anında version kontrolü yapar. JPA tarafında @Version alanı ile uygulanır. Kayıt okunur, version tutulur, update sırasında aynı version hala geçerli mi kontrol edilir.'],
+      ['Gerçek Senaryo','İki operasyon kullanıcısı aynı siparişi açtı. Biri teslimat adresini, diğeri fatura bilgisini değiştirdi. Lock yoksa son kaydeden öncekinin değişikliğini ezebilir. Optimistic locking version uyuşmazlığını yakalar ve kullanıcıya "veri değişti, yenile/merge et" akışı sunar.'],
+      ['Pessimistic Locking ile Fark','Pessimistic locking kaydı baştan kilitler ve diğerlerini bekletir. Çakışma çok sık ve kritikse tercih edilebilir ama throughput düşürür. Optimistic locking okuma yoğun ve çakışmanın az olduğu sistemlerde daha ölçeklenebilir olabilir.'],
+      ['Senior Cevap','Optimistic locking sadece @Version eklemek değildir. Conflict olduğunda kullanıcı deneyimi, retry politikası, merge stratejisi ve API hata modeli tasarlanmalıdır.'],
+      ['Yazılım Mimarı Bakışı','Banka veya e-ticaret sistemlerinde lost update sessiz veri kaybıdır. Versionlı update, audit ve domain conflict çözümü veri bütünlüğü standardının parçası olmalıdır.']
+    ]
+  },
+  {
+    id:'cartredis', title:'SQL vs Redis: Yüksek Trafikli Sepet', phase:'FAZ 4 · Data Layer',
+    lead:'Black Friday sepet tasarımında Redis, SQL, persistence, TTL, backup, Couchbase/ScyllaDB alternatifleri ve bilinçli risk yönetimini anlatır.',
+    bad:'Zero-risk Illusion', good:'Conscious Risk Design',
+    bad_code:`// Sepet sadece process memoryde
+Map<UserId, Cart> carts = new HashMap<>();
+// restart veya scale-out sonrası sepetler kaybolur`,
+    good_code:`cart:{userId} -> Redis
+TTL: 30 days
+AOF/RDB persistence: enabled
+fallback: rebuild from cart-events/order-intent
+backup + restore drill: scheduled`,
+    bad_steps:[['Sepet memoryde veya tek DB yazma yoluna sıkışır.',1,'bad'],['Trafik spikeında SQL write lock/pool baskısı artar.',2,'bad'],['Persistence/backup yoksa Redis kaybı iş kaybına dönüşür.',3,'bad'],['Çıkış senaryosu olmayan risk kör risktir.',4,'bad']],
+    good_steps:[['Sepet access patterni yüksek okuma/yazma ve düşük latency ister.',1,'info'],['Redis hızlı state store olarak seçilir.',2,'ok'],['TTL, persistence ve backup risk yönetimini oluşturur.',3,'ok'],['Couchbase/ScyllaDB gibi alternatifler maliyet ve operasyonla kıyaslanır.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','E-ticaret sepeti klasik relational sipariş tablosu gibi değildir. Kullanıcı ürünü ekler, çıkarır, sayfayı kapatır, geri gelir; sepet çok sık değişir ama her değişiklik finansal kesinlik taşımaz. Bu yüzden düşük latency ve yüksek write throughput önemlidir.'],
+      ['Redis Tasarımı','Redis sepet için güçlü bir adaydır çünkü memory-first çalışır ve çok hızlıdır. Ama "Redis hızlı" demek yeterli değildir. Persistence açılmalı, TTL belirlenmeli, backup/restore stratejisi kurulmalı ve Redis kaybında ne yapılacağı önceden tasarlanmalıdır. Amaç sıfır risk değil, doğru riski bilinçli almaktır.'],
+      ['SQL ile Trade-off','Sepeti tamamen SQLde tutmak güçlü durability sağlar ama Black Friday gibi spike anlarında connection pool, lock, index ve write amplification maliyeti yaratabilir. Buna karşı SQL final order, ödeme ve audit için çok güçlüdür. Sepet geçici state, sipariş kalıcı kayıt olarak ayrılabilir.'],
+      ['Couchbase / ScyllaDB Notu','Couchbase memory-first document yapısıyla ve ScyllaDB yüksek ölçekli düşük latency iddiasıyla alternatif olabilir. Bunlar Redis + SQL senkronizasyon karmaşıklığını azaltabilir, fakat maliyet, operasyonel yetkinlik, consistency ve ekip deneyimi hesaba katılmalıdır.'],
+      ['Senior Cevap','Ben sepet tasarımında önce access patterni çıkarırım: okuma/yazma oranı, TTL, kayıp toleransı, kampanya/stok bağımlılığı ve restore ihtiyacı. Sonra Redis, SQL, Couchbase veya ScyllaDB kararını risk-maliyet-operasyon üçgeninde veririm.']
+    ]
+  },
+  {
+    id:'communicationcoupling', title:'gRPC / REST / Messaging ve Temporal Coupling', phase:'FAZ 3 · Distributed Systems',
+    lead:'Senkron ve asenkron iletişimi teknoloji adıyla değil çökme davranışı, temporal coupling ve observability maliyetiyle karşılaştırır.',
+    bad:'Fragile Sync Chain', good:'Resilient Communication Choice',
+    bad_code:`checkout -> stock REST -> payment REST -> invoice REST -> crm REST
+// invoice down ise checkout da fail`,
+    good_code:`checkout validates critical path
+publish OrderAccepted
+stock/payment/invoice/crm consume independently
+traceId propagated through headers/events`,
+    bad_steps:[['Servisler telefon görüşmesi gibi aynı anda ayakta olmak zorundadır.',1,'bad'],['Bir servis çökünce zincirin tamamı fail olur.',2,'bad'],['Temporal coupling kullanıcı akışını kırılganlaştırır.',2,'bad'],['Asenkrona geçince observability ve consistency maliyeti gelir.',4,'info']],
+    good_steps:[['Kritik anlık cevap gereken yer senkron kalır.',1,'ok'],['Uzun veya yan iş messaginge taşınır.',3,'ok'],['Broker tampon görevi görür.',3,'ok'],['Trace/metric/event state ile asenkron akış izlenir.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','REST ve gRPC senkron iletişim modelidir; telefon görüşmesi gibidir. Karşı taraf o anda ayakta olmalı ve cevap vermelidir. Messaging ise WhatsApp mesajı gibidir; gönderirsin, karşı taraf uygun olduğunda işler. Asıl mesele teknoloji değil, bu iletişim şeklinin sistemi ne kadar kırılgan yaptığıdır.'],
+      ['Temporal Coupling','Temporal coupling, iki servisin aynı anda canlı ve cevap verebilir olma zorunluluğudur. Checkout -> Stock -> Payment -> Invoice -> CRM zincirinde CRM çökerse kullanıcı siparişi tamamlayamıyorsa yan iş kritik yola yanlış bağlanmış olabilir.'],
+      ['Asenkronun Bedeli','Mesaj kuyruğu tampon görevi görür ve servis çökse bile mesaj bekleyebilir. Ama eventual consistency, debug zorluğu, trace propagation, DLT, replay ve observability maliyeti getirir.'],
+      ['Senior Cevap','REST mi Kafka mı diye başlamam. Önce kullanıcı hangi cevabı hemen bilmeli, hangi iş gecikebilir, hangi failure kullanıcıyı durdurmalı sorularını sorarım. Kritik doğrulama senkron, yan etkiler asenkron olabilir.'],
+      ['Yazılım Mimarı Bakışı','İletişim kararı sistemin çökme davranışını belirler. Dayanıklılık kazanırken consistency ve işletilebilirlik maliyetini bilinçli kabul etmek gerekir.']
+    ]
+  },
+  {
+    id:'orchchoreo', title:'Orchestration vs Choreography', phase:'FAZ 3 · Distributed Systems',
+    lead:'İş akışının sahibi kim sorusunu, şef metaforu, event bus, single point of failure ve gözlemlenebilirlik trade-offuyla anlatır.',
+    bad:'Hidden Workflow Ownership', good:'Explicit Flow Ownership',
+    bad_code:`OrderService emits event
+Payment listens
+Shipping listens
+Invoice listens
+// kim overall akışı yönetiyor belirsiz`,
+    good_code:`Orchestrator:
+1 create order
+2 charge payment
+3 reserve stock
+4 book shipment
+on failure -> compensate`,
+    bad_steps:[['Akışı kimin yönettiği belirsizdir.',1,'bad'],['Eventler dağılır; debug için birçok servise bakılır.',4,'bad'],['Orchestrator varsa tek nokta riski doğabilir.',2,'info'],['Kontrol arttıkça bağımsızlık azalır.',2,'info']],
+    good_steps:[['Orchestrationda şef akışı yönetir.',2,'ok'],['Choreographyde servisler event bus üzerinden bağımsız hareket eder.',1,'ok'],['Seçim iş akışının karmaşıklığına göre yapılır.',4,'ok'],['Observability her iki modelde de tasarım gerektirir.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','Orchestration modelinde bir şef servis iş akışını yönetir: önce ödeme al, sonra stok ayır, sonra kargo oluştur. Choreography modelinde merkezi şef yoktur; servisler event bus üzerinden birbirlerinin eventlerine tepki verir.'],
+      ['Gerçek Senaryo','Kredi başvurusu gibi adımları, karar noktaları ve telafi akışları net olan süreçlerde orchestration daha anlaşılır olabilir. Sipariş oluşturulduktan sonra CRM, bildirim ve analytics gibi yan işler choreography ile bağımsız ilerleyebilir.'],
+      ['Single Point of Failure','Orchestrator kontrol ve gözlemlenebilirlik sağlar ama tek nokta riski ve merkezi bağımlılık yaratabilir. Choreography bağımsızlık sağlar ama akışın genel resmini görmek zorlaşır.'],
+      ['Altın Cümle','Kontrol arttıkça bağımsızlık azalır. Bağımsızlık arttıkça genel akışı anlamak ve debug etmek zorlaşır.'],
+      ['Senior Cevap','Ben önce "iş akışının sahibi kim?" sorusunu sorarım. Akış kritik, telafili ve görünür olmalıysa orchestration; eventlere doğal tepki veren bağımsız yan işler varsa choreography daha uygundur.']
+    ]
+  },
+  {
+    id:'queueloadleveling', title:'Queue Neden Var? Kafka / RabbitMQ / SQS', phase:'FAZ 3 · Distributed Systems',
+    lead:'Queue sistemleri hızlandırmak için değil spike emmek, load leveling yapmak ve sistemi ayakta tutmak için anlatır.',
+    bad:'Fast but Collapsing', good:'Slow but Alive',
+    bad_code:`for (Order order : flashSaleOrders) {
+    payment.charge(order); // aynı anda dependencyye yüklen
+}`,
+    good_code:`API -> Queue -> Workers
+queue absorbs spike
+workers process at sustainable throughput
+user sees accepted / processing status`,
+    bad_steps:[['Latency düşük görünür ama dependency kapasitesi aşılır.',1,'bad'],['Spike doğrudan ödeme/stok sistemine biner.',2,'bad'],['Sistem hızlı cevap vermeye çalışırken tamamen çöker.',2,'bad'],['Kullanıcı hiç hizmet alamaz.',3,'bad']],
+    good_steps:[['Queue huni gibi ani trafiği tamponlar.',1,'ok'],['Workerlar sürdürülebilir hızda tüketir.',3,'ok'],['Throughput korunur, latency artabilir.',3,'info'],['Yavaş ama çalışan sistem hızlı ama çöken sistemden iyidir.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','Latency tek işlemin ne kadar sürdüğüdür; throughput birim zamanda kaç işlem tamamlandığıdır. Latency düşükken sistem yine de çökebilir çünkü aynı anda gelen iş hacmi kapasiteyi aşabilir. Queue bu spikeı doğrudan dependencylere bindirmek yerine tamponlar.'],
+      ['Huni Metaforu','Flash sale anında milyonlarca istek huninin geniş ağzından gelir. Workerlar huninin dar çıkışından sürdürülebilir hızda işler. Kuyruk sistemi hızlandırmaz; çoğu zaman kullanıcıya sonucu daha geç verir ama sistemi hayatta tutar.'],
+      ['Kafka / RabbitMQ / SQS','Kafka yüksek hacimli append-only event log ve replay için güçlüdür. RabbitMQ routing ve work queue senaryolarında esnektir. SQS managed queue olarak operasyonel yükü azaltır. Seçim ordering, throughput, replay, routing ve operasyon ihtiyacına göre yapılır.'],
+      ['Kullanıcı Bekler mi?','Mimari karar kullanıcı deneyimiyle birlikte verilir. Kullanıcı ödeme sonucunu hemen beklemek zorunda mı, yoksa "siparişiniz alındı, işleniyor" kabul edilebilir mi? Bu cevap queue kullanımını belirler.'],
+      ['Senior Cevap','Queue kullanma sebebim "daha hızlı olmak" değil, overload anında sistemi kontrollü yavaşlatmaktır. Backpressure, DLQ, retry, consumer lag ve message age metriklerini birlikte tasarlarım.']
+    ]
+  },
+  {
+    id:'hybridasync', title:'Asenkron İşle, Proaktif Güncelle: Hibrit Mimari', phase:'FAZ 3 · Architecture',
+    lead:'REST mi Kafka mı yanlış sorusunu flash sale senaryosunda HTTP 202, broker, WebSocket/SSE ve perceived performance ile çözer.',
+    bad:'User Waits for Everything', good:'Instant Handshake + Async Progress',
+    bad_code:`POST /orders
+reserveStock();
+chargePayment();
+createInvoice();
+updateCrm();
+return 200; // 45 saniye sonra`,
+    good_code:`POST /orders -> 202 Accepted {trackingId}
+publish OrderRequested
+workers process steps
+WebSocket/SSE -> STOCK_OK, PAYMENT_OK, INVOICE_READY`,
+    bad_steps:[['Kullanıcı tüm arka plan işlerini HTTP requestte bekler.',1,'bad'],['3 saniyeyi geçen bekleme terk veya retry doğurur.',5,'bad'],['Bir yan servis yavaşsa tüm kullanıcı akışı yavaşlar.',4,'bad'],['Sistem kullanıcı için kırılmaya zorlanır.',4,'bad']],
+    good_steps:[['API gateway hızlı kabul cevabı döner.',1,'ok'],['Broker şok emici olur.',2,'ok'],['Servisler bağımsız ilerler.',3,'ok'],['WebSocket/SSE ile kullanıcı proaktif güncellenir.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','Gerçek sistemlerde REST mi Kafka mı sorusu çoğu zaman yanlıştır. Kritik ilk temas senkron olabilir; uzun süren işler asenkron işlenebilir; kullanıcı da WebSocket, SSE, push notification veya polling ile proaktif güncellenebilir.'],
+      ['Flash Sale Senaryosu','Kullanıcı Sipariş Vere bastı. API gateway isteği doğrular, idempotency key üretir, broker’a OrderRequested mesajı bırakır ve kullanıcıya 202 Accepted + trackingId döner. Stok, ödeme, fatura ve CRM adımları arkada ilerler. Her adım event üretir ve kullanıcıya aşama aşama durum bildirilir.'],
+      ['Perceived Performance','Kullanıcı için önemli olan sadece gerçek işlem süresi değildir; sistemin kontrol hissi vermesidir. "Siparişin alındı, işleniyor" cevabı belirsiz spinnerdan daha güven vericidir.'],
+      ['Fault Isolation','CRM çökerse sipariş kabul akışı çökmemeli; CRM mesajı retry/DLQ ile arkada işlenmelidir. Payment gibi kritik adım başarısızsa kullanıcıya net failure state dönülmelidir.'],
+      ['Senior Cevap','İyi mimari kullanıcıyı sistemi beklemeye zorlamaz; sistemi de kullanıcı için kırılmaya zorlamaz. Kritik path kısa, yan işler asenkron, durum güncellemesi proaktif ve observable olmalıdır.']
+    ]
+  },
+  {
+    id:'modularmonolith', title:'Monolith Öldü Mü? Modular Monolith', phase:'FAZ 3 · Architecture',
+    lead:'Monolith kötü, microservice iyi ezberini bozup bounded context, distributed spaghetti ve modular monolith altın orta yolunu anlatır.',
+    bad:'Distributed Spaghetti', good:'Modular Monolith First',
+    bad_code:`// acele mikroservis
+UserService -> OrderService -> CatalogService -> PricingService
+// sınırlar belirsiz, network coupling yüksek`,
+    good_code:`modular-monolith
+modules: order, catalog, payment
+rules: explicit interfaces, no shared table ownership
+deploy: single artifact until scaling needs split`,
+    bad_steps:[['Monolith kötü diye servisler acele bölünür.',1,'bad'],['Modül sınırları belirsizse network üzerinden spagetti oluşur.',2,'bad'],['Deployment, debugging ve data consistency maliyeti büyür.',2,'bad'],['Mikroservis beklenen bağımsızlığı vermez.',3,'bad']],
+    good_steps:[['Önce domain sınırları modüler monolith içinde netleştirilir.',1,'ok'],['Modüller explicit interface ile konuşur.',2,'ok'],['Ekip ve ölçek ihtiyacı olgunlaşınca servis ayrılır.',3,'ok'],['Mimari bağlama göre seçilir.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','Monolith tek deploy edilen uygulamadır; bu otomatik olarak kötü değildir. Kötü olan big ball of mud yani sınırları belirsiz, her yerin her yere bağımlı olduğu spaghetti monolithtir. Mikroservis de otomatik iyi değildir; yanlış sınırlarla dağıtık spagetti üretir.'],
+      ['Modular Monolith','Modular monolith tek deploy içinde net modül sınırları kurar. Order, Catalog, Payment gibi modüller explicit APIlerle konuşur, birbirinin tablolarına rastgele erişmez. Bu yaklaşım mikroservis karmaşıklığına geçmeden mimari disiplini öğretir.'],
+      ['Altın Kural','Modüler monolith yapamıyorsan mikroservis yapamazsın. Çünkü mikroservis aynı sınır problemini network, deployment, observability ve distributed transaction maliyetiyle daha pahalı hale getirir.'],
+      ['Gerçek Senaryo','Küçük ekip ve hızla değişen ürün için modular monolith daha doğru olabilir. Servis ayrıştırma; bağımsız ölçek, bağımsız deploy, ekip sahipliği veya teknoloji izolasyonu gerçek ihtiyaç olduğunda yapılmalıdır.'],
+      ['Senior Cevap','Mimari karar trendle değil bağlamla verilir. Bir şeyi değiştirdiğimde ne etkileniyor, sınırlar nerede, ekip nasıl çalışıyor, veri kime ait ve operasyon maliyeti ne sorularını cevaplarım.']
+    ]
+  },
+  {
+    id:'infrachoice', title:'Serverless mı Kubernetes mi?', phase:'FAZ 5 · Infrastructure',
+    lead:'Serverless ve Kubernetes kararını kontrol, operasyonel yük, maliyet, vendor lock-in, scaling ve incident yönetimiyle anlatır.',
+    bad:'Trend-driven Infra', good:'Context-driven Platform',
+    bad_code:`// her workload Kubernetes
+// monitoring, scaling, network policy, upgrades, incident plan yok`,
+    good_code:`if event-driven + bursty + low ops team:
+    consider serverless
+if long-running + custom networking + platform team:
+    consider Kubernetes`,
+    bad_steps:[['Altyapı trend olarak seçilir.',1,'bad'],['Kubernetes operasyonel yükü hesaba katılmaz.',2,'bad'],['Serverless vendor lock-in ve cold start göz ardı edilir.',2,'bad'],['Incident anında sahiplik belirsizleşir.',3,'bad']],
+    good_steps:[['Workload tipi ve ekip kapasitesi değerlendirilir.',1,'ok'],['Kubernetes kontrol verir ama operasyon ister.',2,'ok'],['Serverless hız verir ama kontrol ve taşınabilirlik sınırı getirir.',3,'ok'],['Platform kararı maliyet + risk + ekip olgunluğuyla verilir.',4,'ok']],
+    sections:[
+      ['Temelden Açıklama','Kubernetes uçak kokpiti gibidir: çok kontrol verir ama monitoring, scaling, incident management, upgrade, network policy, resource quota ve security sorumluluğu getirir. Serverless taksi gibidir: hızlı başlatır, operasyon yükünü azaltır ama vendor lock-in, cold start, runtime limitleri ve gözlemleme sınırları olabilir.'],
+      ['Kubernetes Ne Zaman?','Uzun yaşayan servisler, özel network policy, service mesh, yoğun platform standardı, multi-container workload, custom autoscaling ve güçlü platform ekibi varsa Kubernetes mantıklı olabilir. Ama küçük ekipte Kubernetes kurmak ürün geliştirmeyi yavaşlatabilir.'],
+      ['Serverless Ne Zaman?','Event-driven, bursty, kısa süreli işler, cron/task processing veya hızlı MVP senaryolarında serverless ciddi hız sağlar. Trafik yokken maliyet düşük olabilir. Ancak uzun çalışan işlem, düşük latency sabit servis veya vendor bağımsızlığı gerekiyorsa dikkat gerekir.'],
+      ['Gerçek Senaryo','Fatura PDF üretimi gibi event geldikçe çalışan kısa iş serverless için iyi adaydır. Core banking API gibi sürekli düşük latency, sıkı network policy ve derin observability isteyen servis Kubernetes veya managed container platformda daha yönetilebilir olabilir.'],
+      ['Senior Cevap','Altyapı kararını teknoloji sevgisiyle değil workload, ekip, maliyet, operasyon ve risk üzerinden veririm. Kontrol arttıkça sorumluluk artar; operasyonu taşıyamıyorsan kontrol avantajı incident yüküne dönüşür.']
+    ]
+  }
+];
+
+const TRAINING_NOTE_TOPICS = TRAINING_NOTE_SPECS.map(spec=>({
+  id:spec.id, title:spec.title, phase:spec.phase, lead:spec.lead, bad:spec.bad, good:spec.good,
+  bad_code:spec.bad_code, good_code:spec.good_code, bad_steps:spec.bad_steps, good_steps:spec.good_steps,
+  content:buildDeepContent(spec)
+}));
+
 const TOPIC_ENRICHMENTS = {
   procThread:['Concurrency haritasını anlamanın püf noktası, kelimeleri birbirinin yerine kullanmamaktır. Multithreading bir implementasyon tekniğidir; concurrency bir tasarım hedefidir; parallelism fiziksel çalışma biçimidir. CPU-bound işte daha fazla thread genelde daha fazla hız değil daha fazla context switch demektir. IO-bound işte ise bekleme süresi olduğu için daha geniş ama bounded concurrency işe yarayabilir.','Mülakatta güçlü cevap, "kaç thread açarım" diye başlamaz. Önce işin CPU mu IO mu beklediğini, poolun hangi kaynağı koruduğunu, queue dolunca ne olacağını ve timeout/backpressure davranışını açıklar.'],
   sync:['Synchronization konusu üç ayrı problem ailesini çözer: görünürlük, atomicity ve ordering. volatile çoğu adayın karıştırdığı noktadır; görünürlük verir ama value++ gibi compound işlemi güvenli yapmaz. Atomic sınıflar kısa ve bağımsız güncellemelerde CAS ile güçlüdür, ama birden fazla alanı tutarlı değiştirmek gerekiyorsa lock veya tasarım değişikliği gerekir.','Senior seviyede beklenen şey sadece "synchronized yavaştır" demek değildir. Lock kapsamını küçültmek, lock sırasını standartlaştırmak, timeout kullanmak, starvation/fairness etkisini bilmek ve mümkünse shared mutable state miktarını azaltmak gerekir.'],
@@ -1565,6 +1965,7 @@ function addArchitectLens(topic){
 
 TOPICS.unshift(...FOUNDATION_TOPICS);
 TOPICS.push(...PDF_COVERAGE_TOPICS);
+TOPICS.push(...TRAINING_NOTE_TOPICS);
 TOPICS.push(...EXTRA_TOPICS);
 TOPICS.forEach(enrichTopic);
 TOPICS.forEach(addArchitectLens);
@@ -1688,6 +2089,104 @@ const EXTRA_VIZ = {
     good:['CI gates','immutable image','canary deploy','smoke + rollback'],
     noteBad:'Manual release paths turn every deployment into a unique experiment.',
     noteGood:'A pipeline makes quality repeatable and failure recoverable.'
+  },
+  springstereotype:{
+    title:'Spring Stereotype Map',
+    bad:['generic component','mixed layer','raw exception','unclear role'],
+    good:['controller','service','repository','semantic boundary'],
+    noteBad:'If every bean says the same thing, architecture stops being readable.',
+    noteGood:'Stereotypes turn bean registration into design communication.'
+  },
+  asyncdownsides:{
+    title:'Async Cost Radar',
+    bad:['fire and forget','lost exception','broken trace','queue growth'],
+    good:['owned async job','timeout','event state','observable retry'],
+    noteBad:'Async without ownership turns failures into ghosts.',
+    noteGood:'Controlled async makes delay explicit and recoverable.'
+  },
+  jwtsessions:{
+    title:'Token Strategy Decision',
+    bad:['long JWT','no revoke','stale claim','security drift'],
+    good:['short token','session/opaque option','rotation','central policy'],
+    noteBad:'JWT by default can make revocation and policy changes painful.',
+    noteGood:'Token strategy follows risk, client type and operational control.'
+  },
+  httpverbsdeep:{
+    title:'HTTP Verb Semantics',
+    bad:['action URL','unsafe GET','ambiguous POST','retry risk'],
+    good:['safe GET','POST command','idempotent PUT','partial PATCH'],
+    noteBad:'Ignoring HTTP semantics breaks caches, retries and intermediaries.',
+    noteGood:'Method choice defines failure and retry behavior.'
+  },
+  statefulstateless:{
+    title:'State Placement Board',
+    bad:['instance memory','sticky session','restart loss','scale pain'],
+    good:['external state','any instance','fast recovery','elastic scale'],
+    noteBad:'Hidden instance state makes load balancing fragile.',
+    noteGood:'Stateless compute is really state with explicit ownership.'
+  },
+  aopdeep:{
+    title:'AOP Proxy Boundary',
+    bad:['manual boilerplate','scattered concerns','self call','advice skipped'],
+    good:['proxy entry','advice applied','business clean','policy consistent'],
+    noteBad:'Annotations feel magical until a call bypasses the proxy.',
+    noteGood:'AOP is boundary-aware cross-cutting behavior.'
+  },
+  optimisticlocking:{
+    title:'Optimistic Lock Conflict',
+    bad:['read v1','parallel edit','last write wins','lost update'],
+    good:['read v1','version check','conflict detected','merge/retry'],
+    noteBad:'Silent overwrites are data loss wearing a success response.',
+    noteGood:'Versioned writes turn hidden loss into explicit conflict.'
+  },
+  cartredis:{
+    title:'Cart Store Risk Matrix',
+    bad:['memory cart','no TTL','no persistence','no exit plan'],
+    good:['Redis TTL','AOF/RDB','backup drill','risk accepted'],
+    noteBad:'Fast storage without recovery strategy is only fast failure.',
+    noteGood:'Good cart design chooses and manages the right risk.'
+  },
+  communicationcoupling:{
+    title:'Communication Failure Shape',
+    bad:['sync chain','temporal coupling','downstream down','user fail'],
+    good:['critical sync','broker buffer','async side effects','traceable state'],
+    noteBad:'The protocol choice is really a failure-behavior choice.',
+    noteGood:'Use sync for certainty, async for decoupled progress.'
+  },
+  orchchoreo:{
+    title:'Workflow Ownership',
+    bad:['unclear owner','event maze','debug spread','hidden coupling'],
+    good:['orchestrator','event bus','explicit tradeoff','observable flow'],
+    noteBad:'If nobody owns the workflow, every incident becomes archaeology.',
+    noteGood:'Control and independence must be traded consciously.'
+  },
+  queueloadleveling:{
+    title:'Queue Load Leveling Funnel',
+    bad:['traffic spike','direct dependency','capacity exceeded','collapse'],
+    good:['queue buffer','steady workers','lag monitored','system alive'],
+    noteBad:'Low latency does not save a system that cannot absorb throughput.',
+    noteGood:'Queues trade immediacy for survival.'
+  },
+  hybridasync:{
+    title:'Instant Handshake Flow',
+    bad:['HTTP waits','long chain','timeout retry','user abandons'],
+    good:['202 accepted','broker','workers','SSE/WebSocket progress'],
+    noteBad:'Making users wait for every backend side effect is brittle UX.',
+    noteGood:'Fast acknowledgement plus proactive progress balances UX and resilience.'
+  },
+  modularmonolith:{
+    title:'Modular Monolith Decision',
+    bad:['trend split','weak boundaries','network spaghetti','ops tax'],
+    good:['clear modules','explicit interfaces','single deploy','split when needed'],
+    noteBad:'Microservices do not fix unclear boundaries; they distribute them.',
+    noteGood:'A modular monolith is often the safest path to future services.'
+  },
+  infrachoice:{
+    title:'Serverless vs Kubernetes Decision',
+    bad:['trend platform','ops ignored','lock-in surprise','incident fog'],
+    good:['workload fit','ops capacity','cost model','controlled platform'],
+    noteBad:'Infrastructure chosen by fashion becomes operational debt.',
+    noteGood:'Platform choice is a product, cost and operations decision.'
   },
   procThread:{
     title:'Process / Thread / Concurrency Compass',
